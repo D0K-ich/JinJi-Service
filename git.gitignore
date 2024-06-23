@@ -1,0 +1,7 @@
+*.log,
+*.txt,
+
+docs/TODO.md
+/bin/kanopy.exe
+/application/frontend/package.json.md5
+/application/frontend/package-lock.json

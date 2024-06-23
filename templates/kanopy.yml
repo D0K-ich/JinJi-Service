@@ -1,0 +1,16 @@
+logger:
+  level: "debug"
+
+store:
+  mysql:
+    dsn : 'dok:root@tcp(127.0.0.1:3306)/users?charset=utf8mb4&parseTime=True&loc=Europe%2FMoscow'
+    debug: true
+  elastic:
+    host: "http://localhost:9200"
+    indices:
+      users: "users-1"
+
+network:
+    address: "localhost:8081"
+    files_path: "file"
+    access_token: "123321321312"

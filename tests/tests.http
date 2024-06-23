@@ -1,0 +1,9 @@
+
+POST http://localhost:8081/test/1
+Content-Type: application/json
+
+{
+  "test" : "test"
+}
+
+###

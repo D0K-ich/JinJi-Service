@@ -1,0 +1,70 @@
+package main
+
+import (
+	"context"
+	"flag"
+	"fmt"
+	"github.com/D0K-ich/KanopyService/network"
+	"github.com/D0K-ich/KanopyService/store"
+	"go.uber.org/zap"
+	"os"
+	"os/signal"
+	"syscall"
+
+	"github.com/D0K-ich/KanopyService"
+	"github.com/D0K-ich/KanopyService/logs"
+)
+
+var (
+	mainCtx, mainCancel = context.WithCancel(context.Background())
+	configPath 			= flag.String("config", "..\\..\\templates\\kanopy.yml", "Config file path")
+	config 				*KanopyService.Config
+	log					*zap.Logger
+
+	GitTag   string
+	CommitId string
+	version  string
+)
+
+func init() {
+	var err error
+
+	if config, err 		= KanopyService.NewConfig(configPath)	; err != nil {panic("Failed create config" + err.Error())}
+	config.Print()
+
+	if err 	= logs.SetConf(config.Logger)	; err != nil {panic("Failed create new logger" + err.Error())}
+	log = logs.NewLog()
+
+	var sig_chan = make(chan os.Signal)
+	signal.Notify(sig_chan, os.Interrupt, syscall.SIGTERM)
+	go func() {
+		var sig = <-sig_chan
+		log.Info("(main) >> Got os signal", zap.Any("signal", sig))
+		mainCancel()
+	}()
+
+	version = fmt.Sprintf("%s:%s", GitTag, CommitId)
+}
+
+func main() {
+	var err error
+
+	log.Info("(main) >> Starting app...")
+
+	log.Info("(main) >> Creating store...")
+	if store.Default, err = store.NewStore(config.Store); err != nil {log.Fatal("Error while create store", zap.Any("error", err));return}
+
+	log.Info("(main) >> Creating router...")
+	if network.DefaultServer, err = network.NewServer(config.Server, version); err != nil {log.Fatal("Err while create server", zap.Any("err", err))}
+
+	log.Info("(main) >> Creating gpt...")
+
+
+	log.Info("(main) >> Ready to cook")
+
+	select {
+	case <-mainCtx.Done():
+		log.Info("(main) >> Shutting down...")
+		return
+	}
+}
