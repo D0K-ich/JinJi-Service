@@ -57,11 +57,11 @@ func NewLog() (logger *zap.Logger) {
 		Level				: zap.NewAtomicLevelAt(log_lvl.Level()),
 		Development			: true,
 		DisableCaller		: false,
-		DisableStacktrace	: false,
+		DisableStacktrace	: true,
 		Sampling			: nil,
 		Encoding			: "console",
 		EncoderConfig		: encode_config,
-		OutputPaths			: []string{"../logs/logs.txt", "stderr"},
+		OutputPaths			: []string{"C:\\Users\\yjrur\\IdeaProjects\\KanopyService\\logs\\logs.log", "stderr"},
 		ErrorOutputPaths	: []string{"stderr"},
 		InitialFields		: nil,
 	}

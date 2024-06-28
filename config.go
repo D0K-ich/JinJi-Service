@@ -3,7 +3,9 @@ package KanopyService
 import (
 	"errors"
 	"fmt"
+	"github.com/D0K-ich/KanopyService/gpt"
 	"github.com/D0K-ich/KanopyService/network"
+	"github.com/D0K-ich/KanopyService/network/rest"
 	"os"
 	"strings"
 
@@ -18,6 +20,8 @@ type Config struct {
 	Logger		*logs.Config		`yaml:"logger"`
 	Store		*store.Config		`yaml:"store"`
 	Server		*network.Config		`yaml:"network"`
+	Gpt 		*gpt.Config			`yaml:"gpt"`
+	Rest 		*rest.Config		`yaml:"rest"`
 }
 
 func NewConfig(path *string) (config *Config, err error) {
@@ -38,6 +42,7 @@ func(c *Config) Validate() (err error) {
 	if err = c.Server.Validate(); err != nil {return}
 	if err = c.Store.Validate(); err != nil {return}
 	if err = c.Logger.Validate(); err != nil {return}
+	if err = c.Gpt.Validate(); err != nil {return}
 
 	return
 }

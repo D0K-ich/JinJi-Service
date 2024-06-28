@@ -2,17 +2,19 @@ package network
 
 import (
 	"fmt"
+	"github.com/D0K-ich/KanopyService/network/websocket"
+	"github.com/fasthttp/session/v2"
 
 	"go.uber.org/zap"
 
 	"github.com/valyala/fasthttp"
 )
 
-func NewServer(config *Config, git_ver string) (server *fasthttp.Server, err error) {
-
+func NewServer(config *Config, git_ver string, user_session *session.Session) (server *fasthttp.Server, err error) {
+	log.Info("(network) >> Creating new server...")
 	if err = config.Validate(); err != nil {return}
 
-	var main_router = CreateRouter(config.FilesPath, config.AccessToken)
+	var main_router = CreateRouter(config.FilesPath, config.AccessToken, user_session)
 
 	server = &fasthttp.Server{
 		ReadBufferSize		: 4096,             // if we will have big cookies need to increase
@@ -27,9 +29,16 @@ func NewServer(config *Config, git_ver string) (server *fasthttp.Server, err err
 
 	// SHADOW ERR
 	go func() {
-		if err := DefaultServer.ListenAndServe(config.Address); err != nil {
+		if err := server.ListenAndServe(config.Address); err != nil {
 			log.Fatal("Failed to start rest server", zap.Any("error", err))
 		}
 	}()
+
+	go func() {
+		if err := websocket.NewWsConnection(); err != nil {
+			log.Fatal("Failed to start rest server", zap.Any("error", err))
+		}
+	}()
+
 	return
 }

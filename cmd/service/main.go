@@ -5,7 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/D0K-ich/KanopyService/network"
-	"github.com/D0K-ich/KanopyService/store"
+	"github.com/D0K-ich/KanopyService/network/rest"
 	"go.uber.org/zap"
 	"os"
 	"os/signal"
@@ -13,6 +13,7 @@ import (
 
 	"github.com/D0K-ich/KanopyService"
 	"github.com/D0K-ich/KanopyService/logs"
+	"github.com/fasthttp/session/v2"
 )
 
 var (
@@ -51,11 +52,17 @@ func main() {
 
 	log.Info("(main) >> Starting app...")
 
-	log.Info("(main) >> Creating store...")
-	if store.Default, err = store.NewStore(config.Store); err != nil {log.Fatal("Error while create store", zap.Any("error", err));return}
+	//log.Info("(main) >> Creating store...")
+	//if store.Default, err = store.NewStore(config.Store); err != nil {log.Fatal("Error while create store", zap.Any("error", err));return}
+
+	log.Info("Creating new user session")
+	var user_session *session.Session
+	if user_session, err = rest.NewSession(config.Rest, rest.CookieNameUser, rest.TableUserSessions); err != nil {
+		log.Fatal("(main) >> failed to create user session", zap.Any("err", err))
+	}
 
 	log.Info("(main) >> Creating router...")
-	if network.DefaultServer, err = network.NewServer(config.Server, version); err != nil {log.Fatal("Err while create server", zap.Any("err", err))}
+	if network.DefaultServer, err = network.NewServer(config.Server, version, user_session); err != nil {log.Fatal("Err while create server", zap.Any("err", err))}
 
 	log.Info("(main) >> Creating gpt...")
 

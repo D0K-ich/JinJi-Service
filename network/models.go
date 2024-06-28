@@ -6,8 +6,8 @@ type Response struct {
 	Message		string		`json:"message"`
 }
 
-func NewInstance(config *Config) (store *Store) {
-	return &Store{
-		config : config,
-	}
-}
+//func NewInstance(config *Config) (store *Store) {
+//	return &Store{
+//		config : config,
+//	}
+//}

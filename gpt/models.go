@@ -1,52 +1,42 @@
 package gpt
 
-const (
-	defaultPort 		= 1234
-	defaultAddress 		= "http://localhost:%d/v1/chat/completions"
-	defaultModel 		= "TheBloke/Mistral-7B-Instruct-v0.1-GGUF"
+const ( //default values
+	defaultRootPath		= "http://localhost:3001/api/"
+	defaultModel 		= "open-mistral-7b"
 	defaultTimeout      = 5
 	defaultTemp      	= 0.7
 	defaultMaxTokens    = 2048
+	defaultToken 		= "Bearer MEH45JA-48AMFV0-K4BMSBS-VT239C6"
+	defaultMode			= "query | chat"
 
 	defaultContentType 	= "application/json"
 )
 
-type RequestGPT struct {
-	Model			string			`json:"model"`
-	Temperature 	float64 		`json:"temperature"`
+const ( //EPs
+	newMessage = "v1/workspace/test/chat"
+)
 
-	Messages 		MessagesGPT		`json:"messages"`
-	MaxTokens		int				`json:"max_tokens"`
+type RequestGPT struct {
+	Messages 		*Message		`json:"messages"`
 }
 
-type MessagesGPT []*MessageGPT
-type MessageGPT struct {
-	Role 	string	`json:"role"`
-	UserId  string	`json:"user_id"`
-	Content string	`json:"content"`
+type Message struct {
+	Message string `json:"message"`
+	Mode    string `json:"mode"`
 }
 
 type ResponseGPT struct {
-	Id      	string 		`json:"id"`
-	Object  	string 		`json:"object"`
-	Model   	string 		`json:"model"`
+	Id           	string 		`json:"id"`
+	Type         	string 		`json:"type"`
+	TextResponse 	string 		`json:"textResponse"`
+	Error 			string 		`json:"error"`
+	Close 			bool   		`json:"close"`
 
-	Created 	int    		`json:"created"`
-
-	Choices 	Choices		`json:"choices"`
-	Usage		*Usage		`json:"usage"`
+	Sources      	Sources		`json:"sources"`
 }
 
-type Choices []*Choice
-type Choice struct {
-	Index 				int 			`json:"index"`
-	Message 			*MessageGPT 	`json:"message"`
-	FinishReason 		string			`json:"finish_reason"`
+type Sources []*Source
+type Source struct {
+	Title 			string 		`json:"title"`
+	Chunk 			string 		`json:"chunk"`
 }
-
-type Usage struct {
-	PromptTokens     	int 			`json:"prompt_tokens"`
-	CompletionTokens 	int 			`json:"completion_tokens"`
-	TotalTokens      	int 			`json:"total_tokens"`
-}
-

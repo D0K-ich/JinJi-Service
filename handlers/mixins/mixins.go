@@ -2,12 +2,14 @@ package mixins
 
 import "github.com/D0K-ich/KanopyService/store"
 
-func NewMixins() (mixin *Mixins) {
+func NewMixins() *Mixins {
 	return &Mixins{
-		Store : store.Default,
+		store		: store.Default,
 	}
 }
 
 type Mixins struct {
-	Store *store.Store
+	store		*store.Store
 }
+
+func(m *Mixins) Store()		*store.Store		{return m.store}

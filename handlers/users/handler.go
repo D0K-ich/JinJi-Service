@@ -1,10 +1,10 @@
 package users
 
-import "github.com/D0K-ich/KanopyService/handlers/mixins"
+import "github.com/D0K-ich/KanopyService/handlers/users/mixins"
 
-func NewHandler() (handler *Handler) {
+func NewHandler(user_id int) (handler *Handler) {
 	handler = &Handler{
-		Mixins: mixins.NewMixins(),
+		Mixins: mixins.NewMixins(user_id),
 	}
 	return
 }

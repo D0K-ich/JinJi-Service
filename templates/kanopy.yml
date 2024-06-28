@@ -1,9 +1,29 @@
 logger:
   level: "debug"
+  encode: "console" #console | ?
+
+rest:
+  address: ":8081"
+  files_path: "/opt/manager/files"  # same as store
+  access_token: "3d973b5b5cfb4700421aab8f65749bdc"
+  session:
+    port: 3306
+    host: "127.0.0.1"
+    dbname: "users"
+    password: "root"
+    user: "dok"
+
+gpt:
+  token: "Bearer MEH45JA-48AMFV0-K4BMSBS-VT239C6"
+  root_path: "http://localhost:3001/api/"
+  model: "open-mistral-7b"
+  temperature: 0.7
+  max_tokens: 4096
+  timeout_response_min: "5m"
 
 store:
-  mysql:
-    dsn : 'dok:root@tcp(127.0.0.1:3306)/users?charset=utf8mb4&parseTime=True&loc=Europe%2FMoscow'
+  mysql:      # login - dok, pass - root
+    dsn: 'dok:root@tcp(127.0.0.1:3306)/users?charset=utf8mb4&parseTime=True&loc=Europe%2FMoscow'
     debug: true
   elastic:
     host: "http://localhost:9200"

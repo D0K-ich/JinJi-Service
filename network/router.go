@@ -1,10 +1,15 @@
 package network
 
 import (
-	"github.com/D0K-ich/KanopyService/handlers/admins"
+	"fmt"
+	"github.com/D0K-ich/KanopyService/handlers/users"
 	"github.com/fasthttp/router"
+	"github.com/fasthttp/session/v2"
+	"github.com/kr/pretty"
 	"github.com/valyala/fasthttp"
 	"go.uber.org/zap"
+	"strconv"
+
 	"runtime/debug"
 )
 
@@ -13,7 +18,7 @@ const (
 	cookieKeyAdmin  = "admin_id"
 )
 
-func CreateRouter(files_path string,  admin_token string) (main_router *router.Router) {
+func CreateRouter(files_path string,  admin_token string, user_session *session.Session) (main_router *router.Router) {
 	main_router = router.New()
 
 	main_router.PanicHandler = func(ctx *fasthttp.RequestCtx, i interface{}) {
@@ -37,15 +42,42 @@ func CreateRouter(files_path string,  admin_token string) (main_router *router.R
 	}
 
 	main_router.POST("/admin/{subject}/{action?}", func(ctx *fasthttp.RequestCtx) {
-		var response
-		response = admins.NewHandler()
-
-		ctx.SetStatusCode(response.StatusCode())
-		ctx.SetBody(response.Serialize())
-		ctx.SetContentType(message.ContentTypeJson)
+		//var response *http.Response
+		//response = admins.NewHandler()
+		//
+		//ctx.SetStatusCode(response.StatusCode())
+		//ctx.SetBody(response.Serialize())
+		//ctx.SetContentType(message.ContentTypeJson)
 	})
 
+	main_router.POST("/user/{check}/{auth}", func(ctx *fasthttp.RequestCtx) {
+		var err error
+		var session_store *session.Store
+		session_store, err = user_session.Get(ctx)
+		if err != nil {ctx.Error(err.Error(), fasthttp.StatusInternalServerError);return}
+		pretty.Println(string(session_store.GetSessionID()))
 
+		var user_id int
+		var check_cookie = session_store.Get(cookieKeyUser)
+		if check_cookie != nil {
+			if user_id, err = strconv.Atoi(fmt.Sprintf("%v", session_store.Get(cookieKeyUser))); err != nil {return}//todo
+		}
+		pretty.Println(check_cookie)
+
+		var handler = users.NewHandler(user_id)
+
+		var new_user_id int
+		if new_user_id = handler.UserId(); new_user_id != user_id {
+			session_store.Set(cookieKeyUser, new_user_id)
+			if err = user_session.Save(ctx, session_store); err != nil {
+				ctx.Error(err.Error(), fasthttp.StatusInternalServerError)
+				return
+			}
+		}
+		pretty.Println(new_user_id)
+		pretty.Println(handler.UserId())
+		//log.Warn("End")
+	})
 
 	return
 }
