@@ -19,7 +19,7 @@ import (
 
 var (
 	mainCtx, mainCancel = context.WithCancel(context.Background())
-	configPath          = flag.String("config", "..\\..\\templates\\kanopy.yml", "Config file path")
+	configPath          = flag.String("config", "..\\..\\templates\\jinji.yml", "Config file path")
 	config              *jinji.Config
 log                    *zap.Logger
 

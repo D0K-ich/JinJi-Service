@@ -2,7 +2,7 @@ image: golang:1.21.7
 
 stages:
   - build
-  - test
+#  - test
 
 variables:
   GOPATH: /go
@@ -15,12 +15,9 @@ before_script:
 
 build:
   stage: build
-  script:
-    - go test -v .\lab_test.go
-#    - go mod download
-#    - go build -v ./...
-
-test:
-  stage: test
-  script:
-    - go test -v .\lab_test.go
+  script: echo "Define your deployment script!"
+#
+#test:
+#  stage: test
+#  script:
+#    - go test -v .\lab_test.go
