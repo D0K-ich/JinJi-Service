@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"github.com/D0K-ich/JinJi-Service/logs"
-	"github.com/D0K-ich/JinJi-Service/store/adapters/elastic/tpls"
 	"github.com/elastic/go-elasticsearch/v8/typedapi/indices/create"
 	"go.uber.org/zap"
 	"strings"
@@ -20,9 +19,7 @@ var log = logs.NewLog()
 
 func NewAdapter(parent_ctx context.Context, config *Config) (a *Adapter, err error) {
 
-	if err = config.Validate(); err != nil {
-		return
-	}
+	if err = config.Validate(); err != nil {return}
 
 	a = &Adapter{
 		config:  config,
@@ -34,23 +31,14 @@ func NewAdapter(parent_ctx context.Context, config *Config) (a *Adapter, err err
 		RetryBackoff: func(i int) time.Duration { return time.Duration(i) * 500 * time.Millisecond },
 		MaxRetries:   5,
 		//Transport		: &FastTransport{},	 //while not working, freezein on some request
-	}); err != nil {
-		return
-	}
+	}); err != nil {return}
 
 	var ping_ok bool
-	if ping_ok, err = a.Client.Core.Ping().IsSuccess(a.context); err != nil {
-		return
-	}
-	if !ping_ok {
-		err = errors.New("elastic host ping failure")
-		return
-	}
+	if ping_ok, err = a.Client.Core.Ping().IsSuccess(a.context); err != nil {return}
+	if !ping_ok {err = errors.New("elastic host ping failure");return}
 
 	var info_resp *info.Response
-	if info_resp, err = a.Client.Info().Do(a.context); err != nil {
-		return
-	}
+	if info_resp, err = a.Client.Info().Do(a.context); err != nil {return}
 	log.Info("(elastic) >> Adapter created",
 		zap.Any("version", info_resp.Version),
 		zap.Any("name", info_resp.Name),
@@ -69,27 +57,17 @@ type Adapter struct {
 func (a *Adapter) EnsureIndexExist(index_name string, settings *ET.IndexSettings, mapping *ET.TypeMapping) (err error) {
 
 	// check index name
-	if index_name = strings.TrimSpace(index_name); utf8.RuneCountInString(index_name) < 3 {
-		return errors.New("empty or to short index name")
-	}
-	if mapping == nil {
-		return errors.New("nil index mapping")
-	}
+	if index_name = strings.TrimSpace(index_name); utf8.RuneCountInString(index_name) < 3 {return errors.New("empty or to short index name")}
+	if mapping == nil {return errors.New("nil index mapping")}
 
 	// check index already created
 	var exist bool
-	if exist, err = a.Client.Indices.Exists(index_name).Do(a.context); err != nil {
-		return
-	}
-	if exist {
-		return
-	} // todo add mapping comparation
+	if exist, err = a.Client.Indices.Exists(index_name).Do(a.context); err != nil {return}
+	if exist {return} // todo add mapping comparation
 
 	log.Info("(elastic) >> need to create index", zap.Any("name", index_name))
 
-	if settings == nil {
-		settings = tpls.DefaultIndexSettings
-	}
+	if settings == nil {return errors.New("get nil index settings")}
 
 	var response *create.Response
 	if response, err = a.Client.Indices.Create(index_name).
