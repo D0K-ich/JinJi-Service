@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/KanopyService.iml" filepath="$PROJECT_DIR$/.idea/KanopyService.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Jepix.iml" filepath="$PROJECT_DIR$/.idea/Jepix.iml" />
     </modules>
   </component>
 </project>
