@@ -16,7 +16,8 @@ before_script:
 build:
   stage: build
   script:
-    - go mod download
+    - go test -v .\lab_test.go
+#    - go mod download
 #    - go build -v ./...
 
 test:
