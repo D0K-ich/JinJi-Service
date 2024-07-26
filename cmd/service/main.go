@@ -4,36 +4,37 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"github.com/D0K-ich/KanopyService/network"
-	"github.com/D0K-ich/KanopyService/network/rest"
+	"github.com/D0K-ich/JinJi-Service/network"
+	"github.com/D0K-ich/JinJi-Service/network/rest"
+	"github.com/D0K-ich/JinJi-Service/store"
 	"go.uber.org/zap"
 	"os"
 	"os/signal"
 	"syscall"
 
-	"github.com/D0K-ich/KanopyService"
-	"github.com/D0K-ich/KanopyService/logs"
+	jinji "github.com/D0K-ich/JinJi-Service"
+	"github.com/D0K-ich/JinJi-Service/logs"
 	"github.com/fasthttp/session/v2"
 )
 
 var (
 	mainCtx, mainCancel = context.WithCancel(context.Background())
-	configPath 			= flag.String("config", "..\\..\\templates\\kanopy.yml", "Config file path")
-	config 				*KanopyService.Config
-	log					*zap.Logger
+	configPath          = flag.String("config", "..\\..\\templates\\kanopy.yml", "Config file path")
+	config              *jinji.Config
+log                    *zap.Logger
 
-	GitTag   string
-	CommitId string
-	version  string
+GitTag   string
+CommitId string
+version  string
 )
 
 func init() {
 	var err error
 
-	if config, err 		= KanopyService.NewConfig(configPath)	; err != nil {panic("Failed create config" + err.Error())}
+	if config, err = jinji.NewConfig(configPath); err != nil {panic("Failed create config" + err.Error())}
 	config.Print()
 
-	if err 	= logs.SetConf(config.Logger)	; err != nil {panic("Failed create new logger" + err.Error())}
+	if err = logs.SetConf(config.Logger); err != nil {panic("Failed create new logger" + err.Error())}
 	log = logs.NewLog()
 
 	var sig_chan = make(chan os.Signal)
@@ -52,8 +53,11 @@ func main() {
 
 	log.Info("(main) >> Starting app...")
 
-	//log.Info("(main) >> Creating store...")
-	//if store.Default, err = store.NewStore(config.Store); err != nil {log.Fatal("Error while create store", zap.Any("error", err));return}
+	log.Info("(main) >> Creating store...")
+	if store.Default, err = store.NewStore(config.Store); err != nil {
+		log.Fatal("Error while create store", zap.Any("error", err))
+		return
+	}
 
 	log.Info("Creating new user session")
 	var user_session *session.Session
@@ -62,10 +66,11 @@ func main() {
 	}
 
 	log.Info("(main) >> Creating router...")
-	if network.DefaultServer, err = network.NewServer(config.Server, version, user_session); err != nil {log.Fatal("Err while create server", zap.Any("err", err))}
+	if network.DefaultServer, err = network.NewServer(config.Server, version, user_session); err != nil {
+		log.Fatal("Err while create server", zap.Any("err", err))
+	}
 
 	log.Info("(main) >> Creating gpt...")
-
 
 	log.Info("(main) >> Ready to cook")
 

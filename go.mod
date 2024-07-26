@@ -1,4 +1,4 @@
-module github.com/D0K-ich/KanopyService
+module github.com/D0K-ich/JinJi-Service
 
 go 1.21.7
 
@@ -29,8 +29,10 @@ require (
 	github.com/elastic/go-elasticsearch/v8 v8.13.1
 	github.com/fasthttp/router v1.5.1
 	github.com/fasthttp/session/v2 v2.5.5
+	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.3
 	github.com/kr/pretty v0.3.1
+	github.com/sashabaranov/go-openai v1.26.2
 	github.com/valyala/fasthttp v1.54.0
 	go.uber.org/zap v1.27.0
 	gopkg.in/yaml.v3 v3.0.1

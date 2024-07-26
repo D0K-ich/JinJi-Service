@@ -1,6 +1,6 @@
 package admins
 
-import "github.com/D0K-ich/KanopyService/handlers/mixins"
+import "github.com/D0K-ich/JinJi-Service/handlers/mixins"
 
 func NewHandler() (handler *Handler) {
 	handler = &Handler{
@@ -12,4 +12,3 @@ func NewHandler() (handler *Handler) {
 type Handler struct {
 	*mixins.Mixins
 }
-

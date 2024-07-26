@@ -1,6 +1,6 @@
 package mixins
 
-import "github.com/D0K-ich/KanopyService/handlers/mixins"
+import "github.com/D0K-ich/JinJi-Service/handlers/mixins"
 
 func NewMixins(user_id int) *Mixins {
 	return &Mixins{

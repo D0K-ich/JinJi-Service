@@ -3,18 +3,18 @@ package websocket
 import (
 	"net/http"
 
-	"github.com/kr/pretty"
 	"github.com/gorilla/websocket"
+	"github.com/kr/pretty"
 
-	"github.com/D0K-ich/KanopyService/logs"
+	"github.com/D0K-ich/JinJi-Service/logs"
 )
 
 var log = logs.NewLog()
 
 var ws_client = websocket.Upgrader{
-	ReadBufferSize	: 1024,				//1 Kb
-	WriteBufferSize	: 1024,				//1 Kb
-	CheckOrigin		: func(r *http.Request) bool { return true },
+	ReadBufferSize:  1024, //1 Kb
+	WriteBufferSize: 1024, //1 Kb
+	CheckOrigin:     func(r *http.Request) bool { return true },
 }
 
 func reader(conn *websocket.Conn, err_chan chan error) {
@@ -23,20 +23,26 @@ func reader(conn *websocket.Conn, err_chan chan error) {
 	var err error
 
 	for {
-		if message_type, data, err = conn.ReadMessage(); err != nil {pretty.Println(err);return}
+		if message_type, data, err = conn.ReadMessage(); err != nil {
+			pretty.Println(err)
+			return
+		}
 
 		pretty.Println(string(data))
-		if err = conn.WriteMessage(message_type, []byte("Lol")); err != nil {pretty.Println(err);return}
+		if err = conn.WriteMessage(message_type, []byte("Lol")); err != nil {
+			pretty.Println(err)
+			return
+		}
 	}
 }
-
 
 func NewWsConnection() (err error) {
 	log.Info("Create new ws connection")
 
 	setupRoutes()
-	if err = http.ListenAndServe(":8080", nil); err != nil {return}
+	if err = http.ListenAndServe(":54321", nil); err != nil {
+		return
+	}
 
 	return
 }
-

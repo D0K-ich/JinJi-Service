@@ -1,5 +1,5 @@
 
-POST http://localhost:8081/user/check/auth
+POST http://localhost:8084/user/create/new
 Content-Type: application/json
 
 {
@@ -7,3 +7,17 @@ Content-Type: application/json
 }
 
 ###
+
+https://shikimori.one/oauth/authorize?client_id=CLIENT_ID&redirect_uri=REDIRECT_URI&response_type=code&scope=
+
+
+
+#dG-JqoHk3UVI5l-7vE9EvHGm2TLokE6RLLrUlzPXX4w - client id
+#rw93sbyIN0gjvys0Fo96YPWoaIQY5t6MkDR9zPeN0ao - client secret
+#ajtMW5QIPneggvWMl6_XA96m7Kad-QNH1m3SXxfeRko - auth code
+#
+#2PbZP3ddc5uoTRg3beIfi5fRIU7KUMoXsGeA6tHpKTo - access token
+#fimtkc-4ikmFkMOklGmH24AWi0jphHy4W35YQxxtHQA - refresh token
+
+
+

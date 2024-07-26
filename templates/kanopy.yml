@@ -3,7 +3,7 @@ logger:
   encode: "console" #console | ?
 
 rest:
-  address: ":8081"
+  address: ":8085"
   files_path: "/opt/manager/files"  # same as store
   access_token: "3d973b5b5cfb4700421aab8f65749bdc"
   session:
@@ -12,6 +12,11 @@ rest:
     dbname: "users"
     password: "root"
     user: "dok"
+
+network:
+  address: "localhost:8084"
+  files_path: "file"
+  access_token: "123321321312"
 
 gpt:
   token: "Bearer MEH45JA-48AMFV0-K4BMSBS-VT239C6"
@@ -30,7 +35,8 @@ store:
     indices:
       users: "users-1"
 
-network:
-    address: "localhost:8081"
-    files_path: "file"
-    access_token: "123321321312"
+services:
+  shikimory:
+    client_id: "dG-JqoHk3UVI5l-7vE9EvHGm2TLokE6RLLrUlzPXX4w"
+    client_secret: "rw93sbyIN0gjvys0Fo96YPWoaIQY5t6MkDR9zPeN0ao"
+    redirect_url: "urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob"

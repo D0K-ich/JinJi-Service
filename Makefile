@@ -12,21 +12,21 @@ prod-build:
 	@echo "===================================="
 	@echo "Building main app..."
 	@echo "------------------------------------"
-	cd /Users/yjrur/IdeaProjects/KanopyService/application/ & wails build
-	cd /Users/yjrur/IdeaProjects/KanopyService/application/build/bin/ & .\kanopy.exe
+	cd /Users/yjrur/IdeaProjects/JinJi-Service/application/ & wails build
+	cd /Users/yjrur/IdeaProjects/JinJi-Service/application/build/bin/ & .\kanopy.exe
 
 dev-build:
 	@echo "===================================="
 	@echo "Building main app..."
 	@echo "------------------------------------"
 	go build -v -o bin/kanopy.go ./cmd/service
-	cd /Users/yjrur/IdeaProjects/KanopyService/bin/ & go run kanopy.go
+	cd /Users/yjrur/IdeaProjects/JinJi-Service/bin/ & go run kanopy.go
 
 dev-start:
 	@echo "===================================="
 	@echo "Building main app..."
 	@echo "------------------------------------"
-	cd /Users/yjrur/IdeaProjects/KanopyService/cmd/service & go run main.go
+	cd /Users/yjrur/IdeaProjects/JinJi-Service/cmd/service & go run main.go
 
 
 #help:					# display this help
