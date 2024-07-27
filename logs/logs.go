@@ -2,8 +2,6 @@ package logs
 
 import (
 	"errors"
-	"io"
-
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -11,27 +9,21 @@ import (
 type Config struct {
 	Level string `yaml:"level"`
 	//Formatter 	*logrus.Formatter 	`yaml:"formatter"`
-	Output io.Writer `yaml:"output"`
+	Output string `yaml:"encoding"`
 }
 
 func (c *Config) Validate() (err error) {
-	if c == nil {
-		return errors.New("nil log config")
-	}
+	if c == nil {return errors.New("nil log config")}
 
-	if c.Level == "" {
-		return errors.New("nil level config")
-	}
-	//if c.Formatter == nil 	{return errors.New("nil formater config")}
+	if c.Level == "" {return errors.New("nil level config")}
+	if c.Output == "" {return errors.New("nil Output config")}
 	return
 }
 
 var cfg Config
 
 func SetConf(config *Config) (err error) {
-	if err = config.Validate(); err != nil {
-		return
-	}
+	if err = config.Validate(); err != nil {return}
 	cfg = *config
 	return
 }
@@ -72,8 +64,6 @@ func NewLog() (logger *zap.Logger) {
 		InitialFields:     nil,
 	}
 
-	if logger, err = default_cfg.Build(); err != nil {
-		panic(err)
-	}
+	if logger, err = default_cfg.Build(); err != nil {panic(err)}
 	return
 }

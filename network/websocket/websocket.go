@@ -12,9 +12,9 @@ import (
 var log = logs.NewLog()
 
 var ws_client = websocket.Upgrader{
-	ReadBufferSize:  1024, //1 Kb
-	WriteBufferSize: 1024, //1 Kb
-	CheckOrigin:     func(r *http.Request) bool { return true },
+	ReadBufferSize	: 1024, //1 Kb
+	WriteBufferSize	: 1024, //1 Kb
+	CheckOrigin		: func(r *http.Request) bool { return true },
 }
 
 func reader(conn *websocket.Conn, err_chan chan error) {
@@ -37,7 +37,7 @@ func reader(conn *websocket.Conn, err_chan chan error) {
 }
 
 func NewWsConnection() (err error) {
-	log.Info("Create new ws connection")
+	log.Info("(ws) >> Create new ws connection")
 
 	setupRoutes()
 	if err = http.ListenAndServe(":54321", nil); err != nil {

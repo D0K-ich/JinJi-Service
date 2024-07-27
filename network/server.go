@@ -26,10 +26,6 @@ func NewServer(config *Config, git_ver string, user_session *session.Session) (s
 		StreamRequestBody:  true,
 	}
 
-	// ========================
-	// Start main route serving
-
-	// SHADOW ERR
 	go func() {
 		if err := server.ListenAndServe(config.Address); err != nil {
 			log.Fatal("Failed to start rest server", zap.Any("error", err))

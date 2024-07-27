@@ -1,6 +1,6 @@
 logger:
   level: "debug"
-  encode: "console" #console | ?
+  encoding: "console" #console | ?
 
 rest:
   address: ":8085"

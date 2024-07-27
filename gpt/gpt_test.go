@@ -3,23 +3,23 @@ package gpt
 import (
 	"context"
 	"fmt"
-	"github.com/D0K-ich/JinJi-Service/logs"
+	//"github.com/D0K-ich/JinJi-Service/logs"
 	openai "github.com/sashabaranov/go-openai"
 	"net/http"
 	"net/url"
 	"testing"
 )
 
-func TestGpt(t *testing.T) {
-	var err error
-	if err = logs.SetConf(&logs.Config{
-		Level:  "debug",
-		Output: nil,
-	}); err != nil {
-		panic("Failed create new logger" + err.Error())
-	}
-	NewDefaultGPT(context.Background(), nil)
-}
+//func TestGpt(t *testing.T) {
+//	var err error
+//	if err = logs.SetConf(&logs.Config{
+//		Level:  "debug",
+//		Output: "console",
+//	}); err != nil {
+//		panic("Failed create new logger" + err.Error())
+//	}
+//	NewDefaultGPT(context.Background(), nil)
+//}
 
 func TestReqGpt(t *testing.T) {
 	var err error

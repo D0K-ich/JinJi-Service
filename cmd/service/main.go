@@ -59,7 +59,7 @@ func main() {
 		return
 	}
 
-	log.Info("Creating new user session")
+	log.Info("(main) >> Creating new user session...")
 	var user_session *session.Session
 	if user_session, err = rest.NewSession(config.Rest, rest.CookieNameUser, rest.TableUserSessions); err != nil {
 		log.Fatal("(main) >> failed to create user session", zap.Any("err", err))
@@ -67,7 +67,7 @@ func main() {
 
 	log.Info("(main) >> Creating router...")
 	if network.DefaultServer, err = network.NewServer(config.Server, version, user_session); err != nil {
-		log.Fatal("Err while create server", zap.Any("err", err))
+		log.Fatal("(main) >> Err while create server", zap.Any("err", err))
 	}
 
 	log.Info("(main) >> Creating gpt...")

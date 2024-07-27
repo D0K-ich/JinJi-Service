@@ -3,12 +3,26 @@ POST http://localhost:8084/user/create/new
 Content-Type: application/json
 
 {
-  "test" : "test"
+  "_subject": "create",
+  "_action": "new",
+  "name" : "name",
+  "password": "pass",
+  "email" : "mail"
 }
 
-###
+######################
 
-https://shikimori.one/oauth/authorize?client_id=CLIENT_ID&redirect_uri=REDIRECT_URI&response_type=code&scope=
+POST http://localhost:8084/user/create/new
+Content-Type: application/json
+
+{
+  "_subject": "get",
+  "_action": "by-name",
+  "name" : "qew"
+}
+###############################
+#####
+#https://shikimori.one/oauth/authorize?client_id=CLIENT_ID&redirect_uri=REDIRECT_URI&response_type=code&scope=
 
 
 
