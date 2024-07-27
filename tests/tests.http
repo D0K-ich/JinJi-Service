@@ -1,24 +1,27 @@
 
-POST http://localhost:8084/user/create/new
+POST 192.168.2.105:8084/user/profile/profile/new
 Content-Type: application/json
 
 {
-  "_subject": "create",
+  "_module" : "profile",
+  "_subject": "profile",
   "_action": "new",
-  "name" : "name",
+  "name" : "name1",
   "password": "pass",
   "email" : "mail"
 }
 
 ######################
 
-POST http://localhost:8084/user/create/new
+POST 192.168.2.105:8084/user/friends/drop/by-name
 Content-Type: application/json
 
 {
-  "_subject": "get",
+  "_subject": "drop",
   "_action": "by-name",
-  "name" : "qew"
+  "_module": "friends",
+  "friend_name" : "name1",
+  "user_name" : "name"
 }
 ###############################
 #####

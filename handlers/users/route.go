@@ -6,11 +6,14 @@ import (
 )
 
 func(h *Handler) Route(message *messages.Message) (payload any, err error) {
-	switch message.SubjectAction() {
+	switch message.Module() {
 	default				: err = errors.New("unknown path")
 
-	case "create/new"	: payload, err = h.newUser(message.String("name"), message.String("password"), message.String("email"))
-	case "get/by-name"	: payload, err = h.getByName(message.String("name"))
+	case "profile"					: payload, err = h.Profile().Route(message)
+	case "billing"					: payload, err = h.Transactions().Route(message)
+	case "friends"					: payload, err = h.Friends().Route(message)
+	case "settings"					: payload, err = h.Settings().Route(message)
+	case "achievements"				: payload, err = h.Achievements().Route(message)
 	}
 
 	return

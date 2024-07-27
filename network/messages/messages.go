@@ -201,3 +201,46 @@ func Hash(in string) string {
 	var bytes_hash = md5.Sum([]byte(in))
 	return hex.EncodeToString(bytes_hash[:])
 }
+
+func(m *Message) ToMap() (out map[string]any) {
+	if m == nil {return}
+
+	out = map[string]any{
+		FieldType      	: m._type,
+		FieldKind       : m._kind,
+		FieldAccessToken: m._accessToken,
+		// uuids
+		FieldUuid       : m._uuid,
+		FieldUserUuid	: m._userUuid,
+		FieldWorkerUuid : m._workerUuid,
+		// paths
+		FieldModule 	: m._module,
+		FieldSubject    : m._subject,
+		FieldAction		: m._action,
+		// some meta info
+		FieldIpAddr		: m._ipAddr,
+		FieldAppVer		: m._appVer,
+		FieldTimeout	: m._timeout,
+		FieldStatusCode	: m._statusCode,
+
+		FieldMessage	: m.message,
+		// data
+		//FieldBytes		: m._bytes,
+	}
+	// attach payload
+	m.lock.RLock()
+	for key, val := range m.payload {out[key] = val}
+	m.lock.RUnlock()
+
+	return
+}
+
+func(m *Message) Marshall() (json.RawMessage, error) {return json.Marshal(m.ToMap())}
+func(m *Message) Serialize() (body json.RawMessage) {
+	var err error
+	if body, err = m.Marshall(); err != nil {
+		log.Error("Failed to serialize message", zap.Any("m", m), zap.Any("err", err))
+		return nil
+	}
+	return
+}

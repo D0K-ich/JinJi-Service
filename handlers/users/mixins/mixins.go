@@ -1,17 +1,20 @@
 package mixins
 
-import "github.com/D0K-ich/JinJi-Service/handlers/mixins"
+import (
+	"github.com/D0K-ich/JinJi-Service/handlers/mixins"
+	"github.com/D0K-ich/JinJi-Service/store/users"
+)
 
 func NewMixins(user_id int) *Mixins {
 	return &Mixins{
 		userId: user_id,
-		Mixins: mixins.NewMixins(),
+		Store: mixins.NewMixins().Store().Users,
 	}
 }
 
 type Mixins struct {
 	userId int
-	*mixins.Mixins
+	Store *users.Storage
 }
 
 func (m *Mixins) UserId() int           { return m.userId }

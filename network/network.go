@@ -36,9 +36,7 @@ func cors(h fasthttp.RequestHandler) fasthttp.RequestHandler {
 		ctx.Response.Header.Set("Access-Control-Allow-Methods", "GET, POST, HEAD, PATCH, PUT, DELETE, OPTIONS")
 		ctx.Response.Header.Set("Access-Control-Allow-Headers", allowed_headers)
 		ctx.Response.Header.Set("Access-Control-Expose-Headers", allowed_headers)
-		if ctx.IsOptions() {
-			return
-		} // Log.Debug("Return from options")
+		if ctx.IsOptions() {return} // Log.Debug("Return from options")
 		h(ctx)
 	}
 }
