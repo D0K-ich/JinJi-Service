@@ -1,8 +1,10 @@
 package users
 
 import (
-	"github.com/kr/pretty"
+	"github.com/D0K-ich/JinJi-Service/store/models"
+	"github.com/google/uuid"
 	"github.com/valyala/fasthttp"
+	"time"
 
 	"github.com/D0K-ich/JinJi-Service/logs"
 )
@@ -10,10 +12,25 @@ import (
 var log = logs.NewLog()
 
 func (h *Handler) NewUser() (response *fasthttp.Response, err error) {
-	if err = h.Store().Users.CreateUser("email", "phone", "name", 10); err != nil {
-		return
+	var user = &models.User{ //TODO FOR TESTS!
+		PrimaryId:        models.PrimaryId{},
+		Uuid:             uuid.New(),
+		//Avatar:           nil,
+		Name:             "qew",
+		Email:            "sda",
+		State:            "as",
+		Phone:            "das",
+		Level:            10,
+		TariffId:         20,
+		Balance:          30,
+		CreatedAt:        time.Now(),
+		UpdatedAt:        time.Now(),
+		LastOnline:       time.Now(),
+		TariffExpiration: nil,
+		Friends:          &models.Friends{Friends: []*models.Friend{{Name: "fname"}}},
 	}
 
-	pretty.Println(h.Store().Users.GetByEmail("email"))
+	if err = h.Store().Users.New(user); err != nil {return}
+	log.Info("New user created")
 	return
 }

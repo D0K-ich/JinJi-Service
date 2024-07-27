@@ -3,6 +3,7 @@ package models
 import (
 	"database/sql/driver"
 	"encoding/json"
+	"github.com/google/uuid"
 	"time"
 )
 
@@ -22,11 +23,13 @@ type Users []*User
 type User struct {
 	PrimaryId
 
-	Avatar				[]byte					`gorm:"column:avatar"               json:"avatar"`
+	Uuid 				uuid.UUID				`gorm:"column:uuid"                 json:"uuid"`
+	//Avatar				[]byte					`gorm:"column:avatar"               json:"avatar"`
 
 	Name              	string 					`gorm:"column:name"                 json:"name"`
 	Email            	string          		`gorm:"column:email"                json:"email"`
 	State            	string          		`gorm:"column:state"                json:"state"`
+	Phone 				string					`gorm:"column:phone"                json:"phone"`
 
 	Level 				int						`gorm:"column:level"                 json:"level"`
 
@@ -41,8 +44,8 @@ type User struct {
 	TariffExpiration 	*time.Time      		`gorm:"columng:tariff_expiration"   json:"tariff_expiration"`
 
 	//Services            *manager.UserSettings   `gorm:"column:settings"             json:"settings"`
-	//Achievement            *manager.UserSettings   `gorm:"column:settings"             json:"settings"`
-	Friends				Friends					`gorm:"column:friends"`
+	//Achievements            *manager.UserSettings   `gorm:"column:settings"             json:"settings"`
+	Friends				*Friends				`gorm:"column:friends"              json:"friends"`
 }
 
 func(u *User) TableName()    string  {return TableUsers}
@@ -50,7 +53,7 @@ func(u *User) IsEmpty()      bool    {return u == nil || u.PrimaryId.Id == 0}
 func(u *User) IsBanned()     bool    {return u.State == StateBlocked}
 
 type Friends struct {
-	Friends []*Friend `json:"friends"`
+	Friends []*Friend `gorm:"friends" json:"friends"`
 }
 
 type Friend struct {
