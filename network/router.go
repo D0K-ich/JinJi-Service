@@ -53,7 +53,7 @@ func CreateRouter(files_path string, admin_token string, user_session *session.S
 		//ctx.SetContentType(message.ContentTypeJson)
 	})
 
-	main_router.POST("/user/{module}/{subject}/{action}", func(ctx *fasthttp.RequestCtx) {
+	main_router.POST("/user/{subject}/{action}", func(ctx *fasthttp.RequestCtx) {
 		var err error
 		var session_store *session.Store
 		session_store, err = user_session.Get(ctx)

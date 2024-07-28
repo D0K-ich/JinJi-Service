@@ -3,14 +3,12 @@ package profile
 import (
 	"errors"
 	"github.com/D0K-ich/JinJi-Service/store/models"
-	"github.com/google/uuid"
-	"github.com/kr/pretty"
 	"go.uber.org/zap"
 	"strings"
 	"time"
 )
 
-func(h *Handler) NewUser(name, password, email string) (payload any, err error) {
+func(h *Handler) NewUser(name, password, email string, user_id int) (payload any, err error) {
 	if name 	= strings.TrimSpace(name); 		name 		== "" {err = errors.New("empty name for create user");return}
 	if email 	= strings.TrimSpace(email); 	email 		== "" {err = errors.New("empty email for create user");return}
 	if password = strings.TrimSpace(password); 	password 	== "" {err = errors.New("empty password for create user");return}
@@ -18,18 +16,21 @@ func(h *Handler) NewUser(name, password, email string) (payload any, err error) 
 	var exist_user *models.User
 	if exist_user, err = h.Mixins.Store.GetByName(name); exist_user.Name != "" {
 		err = errors.New("user with this nick already exist")
-		pretty.Println(exist_user, err)
 		return
 	}
 
 	var new_user = &models.User{
-		Uuid			: uuid.New(),
+		Uuid			: user_id,
 		Name			: name,
 		Email			: email,
 		State			: models.StateUnconfirmed,
 		Phone			: "",
 		Password		: password,
-		Level			: 0,
+		Level			: &models.Level{
+			Name			: "Новичок",
+			PointsCurrent	: 0,
+			PointsTotal		: 100,
+		},
 		TariffId		: 0,
 		Balance			: 100,
 		CreatedAt		: time.Now(),
@@ -37,6 +38,7 @@ func(h *Handler) NewUser(name, password, email string) (payload any, err error) 
 		LastOnline		: time.Now(),
 		TariffExpiration: nil,
 		Friends			: &models.Friends{Friends: []*models.Friend{}},
+		Achievements	: &models.Achievements{Achievements: []*models.Achievement{}},
 	}
 
 	if err = h.Mixins.Store.Save(new_user); err != nil {return}

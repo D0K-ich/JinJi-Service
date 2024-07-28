@@ -1,6 +1,8 @@
 package users
 
 import (
+	"time"
+
 	"github.com/D0K-ich/JinJi-Service/store/models"
 )
 
@@ -19,7 +21,19 @@ func(s *Storage) Ban(user_name string) (err error) {
 	return
 }
 
+//arch
+func(s *Storage) AddArch(arch_name, user_name string) (err error) {
+	var user *models.User
+	if err = s.db.Where("name = ?", user_name).First(&user).Error; err != nil {return}
 
+	user.Achievements.Achievements = append(user.Achievements.Achievements, &models.Achievement{
+		Name	:    arch_name,
+		DateGet	: time.Now(),
+	})
+
+	if err = s.db.Save(&user).Error; err != nil {return}
+	return
+}
 
 //Friends
 func(s *Storage) AddFriend(user_name, friend_name string) (err error) {

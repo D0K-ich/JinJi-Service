@@ -1,14 +1,28 @@
 
-POST 192.168.2.105:8084/user/profile/profile/new
+POST 192.168.2.105:8084/user/achievements/new
 Content-Type: application/json
 
 {
-  "_module" : "profile",
+  "_module" : "user",
+  "_subject": "achievements",
+  "_action": "new",
+  "arch_name" : "arch_name",
+  "user_name" : "name"
+}
+
+######################
+
+
+POST 192.168.2.105:8084/user/profile/new
+Content-Type: application/json
+
+{
+  "_module" : "user",
   "_subject": "profile",
   "_action": "new",
-  "name" : "name1",
-  "password": "pass",
-  "email" : "mail"
+  "name" : "name",
+  "password": "pas",
+  "email": "email"
 }
 
 ######################

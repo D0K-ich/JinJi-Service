@@ -26,7 +26,7 @@ dev-start:
 	@echo "===================================="
 	@echo "Building main app..."
 	@echo "------------------------------------"
-	cd /Users/yjrur/IdeaProjects/JinJi-Service/cmd/service & go run main.go
+	cd cmd/service && go run main.go
 
 
 #help:					# display this help
