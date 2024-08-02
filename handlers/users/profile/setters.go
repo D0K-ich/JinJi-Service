@@ -3,12 +3,13 @@ package profile
 import (
 	"errors"
 	"github.com/D0K-ich/JinJi-Service/store/models"
+	"github.com/D0K-ich/types/uuid"
 	"go.uber.org/zap"
 	"strings"
 	"time"
 )
 
-func(h *Handler) NewUser(name, password, email string, user_id int) (payload any, err error) {
+func(h *Handler) NewUser(name, password, email string) (payload any, err error) {
 	if name 	= strings.TrimSpace(name); 		name 		== "" {err = errors.New("empty name for create user");return}
 	if email 	= strings.TrimSpace(email); 	email 		== "" {err = errors.New("empty email for create user");return}
 	if password = strings.TrimSpace(password); 	password 	== "" {err = errors.New("empty password for create user");return}
@@ -20,7 +21,7 @@ func(h *Handler) NewUser(name, password, email string, user_id int) (payload any
 	}
 
 	var new_user = &models.User{
-		Uuid			: user_id,
+		Uuid			: uuid.NewUserUuid().String(),
 		Name			: name,
 		Email			: email,
 		State			: models.StateUnconfirmed,
@@ -40,6 +41,8 @@ func(h *Handler) NewUser(name, password, email string, user_id int) (payload any
 		Friends			: &models.Friends{Friends: []*models.Friend{}},
 		Achievements	: &models.Achievements{Achievements: []*models.Achievement{}},
 	}
+
+	if err = new_user.NewAchievement(&models.Achievement{Name: "Привет!", DateGet: time.Now()}); err != nil {return}
 
 	if err = h.Mixins.Store.Save(new_user); err != nil {return}
 	log.Info("New user created", zap.Any("name", name))

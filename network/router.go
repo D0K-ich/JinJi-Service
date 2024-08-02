@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/D0K-ich/JinJi-Service/handlers/users"
-	"github.com/D0K-ich/JinJi-Service/network/messages"
+	"github.com/D0K-ich/types/message"
 	"github.com/fasthttp/router"
 	"github.com/fasthttp/session/v2"
 	"github.com/valyala/fasthttp"
@@ -76,11 +76,19 @@ func CreateRouter(files_path string, admin_token string, user_session *session.S
 			}
 		}
 
-		var incoming *messages.Message
-		if incoming, err = messages.FromJson(ctx.PostBody()); err != nil {
+		var incoming *message.Message
+		if incoming, err = message.FromJson(ctx.PostBody()); err != nil {
 			writeError(ctx, "failed to decode body: " + err.Error())
 			return
 		}
+
+		//todo legacy
+		var subject = ctx.UserValue("subject").(string)
+		var action 	= ctx.UserValue("action").(string)
+		incoming.SetModule("user")
+		incoming.SetSubject(subject)
+		incoming.SetAction(action)
+
 
 		var response any
 		if response, err = handler.Route(incoming); err != nil {

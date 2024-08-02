@@ -2,6 +2,7 @@ package users
 
 import (
 	"github.com/D0K-ich/JinJi-Service/handlers/users/achievements"
+	"github.com/D0K-ich/JinJi-Service/handlers/users/chat"
 	"github.com/D0K-ich/JinJi-Service/handlers/users/friends"
 	"github.com/D0K-ich/JinJi-Service/handlers/users/mixins"
 	"github.com/D0K-ich/JinJi-Service/handlers/users/profile"
@@ -22,6 +23,7 @@ type Handler struct {
 }
 
 func(h *Handler) Profile() 		    *profile.Handler           	{return profile.NewHandler(h.Mixins)}
+func(h *Handler) Chat() 		    *chat.Handler           	{return chat.NewHandler(h.Mixins)}
 func(h *Handler) Tariffs() 		    *tariffs.Handler           	{return tariffs.NewHandler(h.Mixins)}
 func(h *Handler) Settings()         *settings.Handler           {return settings.NewHandler(h.Mixins)}
 func(h *Handler) Friends()          *friends.Handler            {return friends.NewHandler(h.Mixins)}

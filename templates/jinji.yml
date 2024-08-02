@@ -14,7 +14,7 @@ rest:
     user: "dok"
 
 network:
-  address: "192.168.2.105:8084"
+  address: "192.168.2.107:8084"
   files_path: "file"
   access_token: "123321321312"
 

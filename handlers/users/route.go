@@ -2,18 +2,20 @@ package users
 
 import (
 	"errors"
-	"github.com/D0K-ich/JinJi-Service/network/messages"
+
 	"github.com/D0K-ich/JinJi-Service/store/models"
+	"github.com/D0K-ich/types/message"
+	"github.com/D0K-ich/types/iface"
 )
 
-func(h *Handler) Route(message *messages.Message) (payload any, err error) {
+func(h *Handler) Route(message *message.Message) (payload any, err error) {
 	switch message.SubjectAction() {
 	default				: err = errors.New("unknown path")
 
 	//profile
-	case "profile/new"				: payload, err 	= h.Profile().NewUser(message.String("name"), message.String("password"), message.String("email"), h.UserId())
+	case "profile/new"				: payload, err 	= h.Profile().NewUser(message.String("name"), message.String("password"), message.String("email"))
 	case "profile/get"			    : payload, err 	= h.Profile().GetById(h.UserId())
-	case "profile/update" 			: err 			= h.Profile().UpdateUser(messages.ReMarshalMust[*models.User](message.ToMap()))
+	case "profile/update" 			: err 			= h.Profile().UpdateUser(iface.ReMarshalMust[*models.User](message.ToMap()))
 
 	//billing
 	//case "transactions/list"        : payload, err 	= h.Transactions().List(h.UserId())
@@ -36,6 +38,12 @@ func(h *Handler) Route(message *messages.Message) (payload any, err error) {
 	//achievements
 	case "achievements/all"				: payload, err 	= h.Achievements().GetAllAchievements()
 	case "achievements/new"				: payload, err 	= h.Achievements().NewAchievement(message.String("arch_name"), message.String("user_name"))
+
+	//messages
+	case "messages/new"					: payload, err 	= h.Chat().NewMessage(message.String("user_message"), message.String("dialog_uuid"))
+	case "dialogs/list"					: payload, err 	= h.Chat().GetAllDialogs(message.String("user_name"))
+	case "dialog/new"					: payload, err 	= h.Chat().NewDialog()
+	//case "dialog/drop"					: payload, err 	= h.Chat().GetAllAchievements()
 	}
 
 	return

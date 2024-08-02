@@ -1,10 +1,10 @@
 package tariffs
 
 import (
-	"github.com/D0K-ich/JinJi-Service/network/messages"
+	"github.com/D0K-ich/types/message"
 )
 
-func(h *Handler) Route(message *messages.Message) (payload any, err error) {
+func(h *Handler) Route(message *message.Message) (payload any, err error) {
 
 	switch message.SubjectAction() {
 	//case "profile/new"				: payload, err 	= h.NewUser(message.String("name"), message.String("password"), message.String("email"))

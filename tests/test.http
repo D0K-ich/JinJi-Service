@@ -1,0 +1,17 @@
+POST http://192.168.2.107:8084/user/messages/new
+Content-Type: application/json
+
+{
+  "user_message": "dasadasd"
+}
+#############
+
+POST http://192.168.2.107:8084/user/profile/new
+Content-Type: application/json
+
+{
+  "name": "dasadasd",
+  "password": "dasadasd",
+  "email": "dasadasd"
+}
+#############
