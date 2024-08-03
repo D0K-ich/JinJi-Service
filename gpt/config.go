@@ -1,9 +1,9 @@
 package gpt
 
 import (
+	"time"
 	"errors"
 	"strings"
-	"time"
 )
 
 type Config struct {
@@ -12,6 +12,7 @@ type Config struct {
 	Temperature 		float64			`yaml:"temperature"`
 	MaxTokens			int				`yaml:"max_tokens"`
 	Token 				string			`yaml:"token"`
+	Beams 				string			`yaml:"beams"`
 
 	TimeoutResponseMin 	time.Duration 	`json:"timeout_response_min"`
 	//PersonRole			MessagesGPT		`json:"person_role"`
