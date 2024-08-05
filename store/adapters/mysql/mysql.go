@@ -1,14 +1,14 @@
 package mysql
 
 import (
-	"errors"
-	dblog "log"
+	"log"
 	"os"
 	"time"
+	"errors"
 
-	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
+	"gorm.io/driver/mysql"
 )
 
 type Adapter struct {
@@ -21,7 +21,7 @@ func NewAdapter(config *Config) (a *Adapter, err error) {
 
 	a = &Adapter{config : config}
 	if a.db, err = gorm.Open(mysql.Open(config.Dsn), &gorm.Config{
-		Logger	: logger.New(dblog.New(os.Stdout, "\r\n", dblog.LstdFlags), logger.Config{
+		Logger	: logger.New(log.New(os.Stdout, "\r\n", log.LstdFlags), logger.Config{
 			SlowThreshold	: 200 * time.Millisecond,
 			LogLevel		: logger.Warn,
 			Colorful		: true,

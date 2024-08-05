@@ -1,12 +1,14 @@
 package profile
 
 import (
-	"errors"
-	"github.com/D0K-ich/JinJi-Service/store/models"
-	"github.com/D0K-ich/types/uuid"
-	"go.uber.org/zap"
-	"strings"
 	"time"
+	"errors"
+	"strings"
+
+	"github.com/rs/zerolog/log"
+
+	"github.com/D0K-ich/types/uuid"
+	"github.com/D0K-ich/JinJi-Service/store/models"
 )
 
 func(h *Handler) NewUser(name, password, email string) (payload any, err error) {
@@ -45,7 +47,7 @@ func(h *Handler) NewUser(name, password, email string) (payload any, err error) 
 	if err = new_user.NewAchievement(&models.Achievement{Name: "Привет!", DateGet: time.Now()}); err != nil {return}
 
 	if err = h.Mixins.Store.Save(new_user); err != nil {return}
-	log.Info("New user created", zap.Any("name", name))
+	log.Info().Msgf("New user created", "name", name)
 	return
 }
 
@@ -53,7 +55,7 @@ func(h *Handler) UpdateUser(user *models.User) (err error) {
 	if user == nil {return errors.New("nil user for update")}
 
 	if err = h.Mixins.Store.Save(user); err != nil {return}
-	log.Info("New user created", zap.Any("name", user))
+	log.Info().Msgf("New user created", "name", user)
 
 	return
 }

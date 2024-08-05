@@ -1,10 +1,10 @@
 package chat
 
 import (
-	"errors"
 	"fmt"
-	"strings"
 	"time"
+	"errors"
+	"strings"
 )
 
 func(h *Handler) NewMessage(message, dialog_uuid string) (payload any, err error) {

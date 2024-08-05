@@ -2,8 +2,11 @@ package logs
 
 import (
 	"errors"
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
+	"os"
+	"path/filepath"
+	"strconv"
 )
 
 type Config struct {
@@ -20,50 +23,11 @@ func (c *Config) Validate() (err error) {
 	return
 }
 
-var cfg Config
-
 func SetConf(config *Config) (err error) {
-	if err = config.Validate(); err != nil {return}
-	cfg = *config
-	return
-}
-
-func NewLog() (logger *zap.Logger) {
-	var err error
-
-	var log_lvl zap.AtomicLevel
-	if log_lvl, err = zap.ParseAtomicLevel(cfg.Level); err != nil {
-		panic("Failed to create new conf" + err.Error())
+	zerolog.CallerMarshalFunc = func(pc uintptr, file string, line int) string {
+		return filepath.Base(file) + ":" + strconv.Itoa(line)
 	}
+	log.Logger = log.With().Caller().Logger().Output(zerolog.ConsoleWriter{Out: os.Stderr})
 
-	var encode_config = zapcore.EncoderConfig{
-		TimeKey:        "ts",
-		LevelKey:       "level",
-		NameKey:        "logger",
-		CallerKey:      "caller",
-		FunctionKey:    zapcore.OmitKey,
-		MessageKey:     "msg",
-		StacktraceKey:  "stacktrace",
-		LineEnding:     zapcore.DefaultLineEnding,
-		EncodeLevel:    zapcore.CapitalColorLevelEncoder,
-		EncodeTime:     zapcore.RFC3339TimeEncoder,
-		EncodeDuration: zapcore.SecondsDurationEncoder,
-		EncodeCaller:   zapcore.ShortCallerEncoder,
-	}
-
-	var default_cfg = zap.Config{
-		Level:             zap.NewAtomicLevelAt(log_lvl.Level()),
-		Development:       true,
-		DisableCaller:     false,
-		DisableStacktrace: true,
-		Sampling:          nil,
-		Encoding:          "console",
-		EncoderConfig:     encode_config,
-		OutputPaths:       []string{"C:\\Users\\yjrur\\IdeaProjects\\JinJi-Service\\logs\\logs.log", "stderr"},
-		ErrorOutputPaths:  []string{"stderr"},
-		InitialFields:     nil,
-	}
-
-	if logger, err = default_cfg.Build(); err != nil {panic(err)}
 	return
 }

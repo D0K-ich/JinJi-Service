@@ -1,15 +1,13 @@
 package websocket
 
 import (
+	"github.com/rs/zerolog/log"
 	"net/http"
 
-	"github.com/gorilla/websocket"
 	"github.com/kr/pretty"
-
-	"github.com/D0K-ich/JinJi-Service/logs"
+	"github.com/gorilla/websocket"
 )
 
-var log = logs.NewLog()
 
 var ws_client = websocket.Upgrader{
 	ReadBufferSize	: 1024, //1 Kb
@@ -37,7 +35,7 @@ func reader(conn *websocket.Conn, err_chan chan error) {
 }
 
 func NewWsConnection() (err error) {
-	log.Info("(ws) >> Create new ws connection")
+	log.Info().Msg("(ws) >> Create new ws connection")
 
 	setupRoutes()
 	if err = http.ListenAndServe(":54321", nil); err != nil {

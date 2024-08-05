@@ -17,8 +17,11 @@ require (
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/klauspost/compress v1.17.8 // indirect
 	github.com/kr/text v0.2.0 // indirect
+	github.com/mattn/go-colorable v0.1.13 // indirect
+	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/philhofer/fwd v1.1.2 // indirect
 	github.com/rogpeppe/go-internal v1.9.0 // indirect
+	github.com/rs/zerolog v1.33.0 // indirect
 	github.com/savsgio/gotils v0.0.0-20240303185622-093b76447511 // indirect
 	github.com/scylladb/go-reflectx v1.0.1 // indirect
 	github.com/scylladb/gocqlx v1.5.0 // indirect

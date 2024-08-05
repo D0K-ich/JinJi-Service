@@ -1,5 +1,6 @@
 POST http://192.168.2.107:8084/user/messages/new
 Content-Type: application/json
+X-Access-Token: sadsdasd
 
 {
   "user_message": "dasadasd"

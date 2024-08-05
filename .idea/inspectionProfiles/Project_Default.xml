@@ -22,6 +22,13 @@
     <inspection_tool class="GoUnusedParameter" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="GoUnusedTypeParameter" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="GoVarAndConstTypeMayBeOmitted" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="IncorrectHttpHeaderInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="customHeaders">
+        <set>
+          <option value="X-Access-Token" />
+        </set>
+      </option>
+    </inspection_tool>
     <inspection_tool class="SpellCheckingInspection" enabled="false" level="TYPO" enabled_by_default="false">
       <option name="processCode" value="true" />
       <option name="processLiterals" value="true" />

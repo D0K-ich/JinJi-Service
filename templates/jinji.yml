@@ -14,9 +14,9 @@ rest:
     user: "dok"
 
 network:
-  address: "192.168.2.107:8084"
+  address: "192.168.2.119:8084"
   files_path: "file"
-  access_token: "123321321312"
+  admin_token: "abf2779c3689d365ec46e7d23e5f2acc"
 
 gpt:
   token: "Bearer MEH45JA-48AMFV0-K4BMSBS-VT239C6"

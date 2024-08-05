@@ -2,8 +2,9 @@ package chat
 
 import (
 	"errors"
-	"github.com/D0K-ich/JinJi-Service/store/models"
 	"strings"
+
+	"github.com/D0K-ich/JinJi-Service/store/models"
 )
 
 func(h *Handler) GetAllDialogs(user_name string) (payload any, err error) {

@@ -2,6 +2,11 @@ package JinJi_Service
 
 import (
 	"fmt"
+	"github.com/rs/zerolog"
+	"path/filepath"
+	"strconv"
+
+	"github.com/rs/zerolog/log"
 	"os/exec"
 	"testing"
 
@@ -35,4 +40,12 @@ func TestPython(t *testing.T) {
 	}
 
 	fmt.Println(string(output))
+}
+
+func TestHash(t *testing.T) {
+	zerolog.CallerMarshalFunc = func(pc uintptr, file string, line int) string {
+		return filepath.Base(file) + ":" + strconv.Itoa(line)
+	}
+	log.Logger = log.With().Caller().Logger()
+	log.Info().Msg("hello world")
 }

@@ -3,6 +3,8 @@ package friends
 import (
 	"errors"
 	"strings"
+
+	"github.com/rs/zerolog/log"
 )
 
 func(h *Handler) New(friend_name, user_name string) (payload any, err error) {
@@ -13,7 +15,7 @@ func(h *Handler) New(friend_name, user_name string) (payload any, err error) {
 
 	if err = h.Mixins.Store.AddFriend(user_name, friend_name); err != nil {err = errors.New("err on add frient user " + err.Error());return}
 
-	log.Info("New friend added")
+	log.Info().Msg("New friend added")
 	return
 }
 
@@ -25,6 +27,6 @@ func(h *Handler) Drop(friend_name, user_name string) (payload any, err error) {
 
 	if err = h.Mixins.Store.DropFriend(user_name, friend_name); err != nil {err = errors.New("err on add frient user " + err.Error());return}
 
-	log.Info("New friend droppped")
+	log.Info().Msg("New friend droppped")
 	return
 }

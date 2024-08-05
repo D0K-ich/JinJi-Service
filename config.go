@@ -1,6 +1,7 @@
 package JinJi_Service
 
 import (
+	"github.com/D0K-ich/JinJi-Service/logs"
 	"os"
 	"fmt"
 	"errors"
@@ -10,7 +11,6 @@ import (
 	"github.com/kr/pretty"
 
 	"github.com/D0K-ich/JinJi-Service/gpt"
-	"github.com/D0K-ich/JinJi-Service/logs"
 	"github.com/D0K-ich/JinJi-Service/store"
 	"github.com/D0K-ich/JinJi-Service/network"
 	"github.com/D0K-ich/JinJi-Service/service"
@@ -23,7 +23,7 @@ type Config struct {
 	Server  	*network.Config 	`yaml:"network"`
 	Gpt     	*gpt.Config     	`yaml:"gpt"`
 	Rest    	*rest.Config    	`yaml:"rest"`
-	Service 	*service.Config 	`yaml:"service"`
+	Service 	*service.Config 	`yaml:"services"`
 }
 
 func NewConfig(path *string) (config *Config, err error) {

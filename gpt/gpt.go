@@ -1,17 +1,15 @@
 package gpt
 
 import (
+	"fmt"
+	"time"
 	"bytes"
 	"context"
-	"encoding/json"
-	"fmt"
-	"github.com/kr/pretty"
-	"go.uber.org/zap"
-
 	"net/http"
-	"time"
+	"encoding/json"
 
-	"github.com/D0K-ich/JinJi-Service/logs"
+	"github.com/kr/pretty"
+	"github.com/rs/zerolog/log"
 )
 
 type DocGPT struct {
@@ -28,10 +26,8 @@ type DocGPT struct {
 	config *Config
 }
 
-var log = logs.NewLog()
-
 func NewDefaultGPT(ctx context.Context, user any) (gpt *DocGPT, err error) {
-	log.Info("Start create default gpt...")
+	log.Info().Msg("Start create default gpt...")
 
 	gpt = &DocGPT{
 		client:   &http.Client{Timeout: defaultTimeout * time.Minute},
@@ -46,17 +42,14 @@ func NewDefaultGPT(ctx context.Context, user any) (gpt *DocGPT, err error) {
 	go gpt.run()
 
 	var answer string
-	if answer, err = gpt.newMessage("Про что жанр иссекай?", "chat"); err != nil {
-		return
-	}
-	pretty.Println(answer)
+	if answer, err = gpt.newMessage("Про что жанр иссекай?", "chat"); err != nil {return}
 
-	log.Info("Finish create default gpt")
+	log.Info().Msgf("Finish create default gpt %s", answer)
 	return
 }
 
 func NewGptByConfig(config *Config, user any) (gpt *DocGPT, err error) {
-	log.Info("Start create custom gpt...")
+	log.Info().Msg("Start create custom gpt...")
 	if err = config.Validate(); err != nil {
 		return
 	}
@@ -72,7 +65,7 @@ func NewGptByConfig(config *Config, user any) (gpt *DocGPT, err error) {
 
 	go gpt.run()
 
-	log.Info("Finish create custom gpt")
+	log.Info().Msg("Finish create custom gpt")
 	return
 }
 
@@ -87,7 +80,7 @@ func (d *DocGPT) run() {
 
 		case message := <-d.message:
 			if answer, err = d.newMessage(message, "chat"); err != nil {
-				log.Error("Get err on gpt communicate", zap.Any("err", err))
+				log.Error().Msgf("Get err on gpt communicate", "err", err)
 			}
 			pretty.Println(answer)
 		}

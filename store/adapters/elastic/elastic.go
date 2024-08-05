@@ -1,21 +1,19 @@
 package elastic
 
 import (
-	"context"
-	"errors"
-	"github.com/D0K-ich/JinJi-Service/logs"
-	"github.com/elastic/go-elasticsearch/v8/typedapi/indices/create"
-	"go.uber.org/zap"
-	"strings"
 	"time"
+	"errors"
+	"context"
+	"strings"
 	"unicode/utf8"
 
-	E8 "github.com/elastic/go-elasticsearch/v8"
-	"github.com/elastic/go-elasticsearch/v8/typedapi/core/info"
-	ET "github.com/elastic/go-elasticsearch/v8/typedapi/types"
-)
+	"github.com/rs/zerolog/log"
 
-var log = logs.NewLog()
+	E8 "github.com/elastic/go-elasticsearch/v8"
+	ET "github.com/elastic/go-elasticsearch/v8/typedapi/types"
+	"github.com/elastic/go-elasticsearch/v8/typedapi/core/info"
+	"github.com/elastic/go-elasticsearch/v8/typedapi/indices/create"
+)
 
 func NewAdapter(parent_ctx context.Context, config *Config) (a *Adapter, err error) {
 
@@ -39,10 +37,10 @@ func NewAdapter(parent_ctx context.Context, config *Config) (a *Adapter, err err
 
 	var info_resp *info.Response
 	if info_resp, err = a.Client.Info().Do(a.context); err != nil {return}
-	log.Info("(elastic) >> Adapter created",
-		zap.Any("version", info_resp.Version),
-		zap.Any("name", info_resp.Name),
-		zap.Any("cluster", info_resp.ClusterName))
+	log.Info().Msgf("(elastic) >> Adapter created",
+		"version", info_resp.Version,
+		"name", info_resp.Name,
+		"cluster", info_resp.ClusterName)
 
 	return
 }
@@ -65,7 +63,7 @@ func (a *Adapter) EnsureIndexExist(index_name string, settings *ET.IndexSettings
 	if exist, err = a.Client.Indices.Exists(index_name).Do(a.context); err != nil {return}
 	if exist {return} // todo add mapping comparation
 
-	log.Info("(elastic) >> need to create index", zap.Any("name", index_name))
+	log.Info().Msgf("(elastic) >> need to create index", "name", index_name)
 
 	if settings == nil {return errors.New("get nil index settings")}
 
@@ -77,6 +75,6 @@ func (a *Adapter) EnsureIndexExist(index_name string, settings *ET.IndexSettings
 		return
 	}
 
-	log.Info("(elastic) >> index created", zap.Any("name", response.Index))
+	log.Info().Msgf("(elastic) >> index created", "name", response.Index)
 	return
 }

@@ -1,11 +1,12 @@
 package gpt
 
 import (
-	"bytes"
-	"encoding/json"
-	"github.com/kr/pretty"
 	"io"
+	"bytes"
 	"net/http"
+	"encoding/json"
+
+	"github.com/kr/pretty"
 )
 
 func(d *DocGPT) GetChats() {

@@ -1,14 +1,14 @@
 package users
 
 import (
-	"github.com/D0K-ich/JinJi-Service/handlers/users/achievements"
 	"github.com/D0K-ich/JinJi-Service/handlers/users/chat"
-	"github.com/D0K-ich/JinJi-Service/handlers/users/friends"
 	"github.com/D0K-ich/JinJi-Service/handlers/users/mixins"
 	"github.com/D0K-ich/JinJi-Service/handlers/users/profile"
-	"github.com/D0K-ich/JinJi-Service/handlers/users/settings"
 	"github.com/D0K-ich/JinJi-Service/handlers/users/tariffs"
+	"github.com/D0K-ich/JinJi-Service/handlers/users/friends"
+	"github.com/D0K-ich/JinJi-Service/handlers/users/settings"
 	"github.com/D0K-ich/JinJi-Service/handlers/users/transactions"
+	"github.com/D0K-ich/JinJi-Service/handlers/users/achievements"
 )
 
 func NewHandler(user_id int) (handler *Handler) {

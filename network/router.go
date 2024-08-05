@@ -1,17 +1,18 @@
 package network
 
 import (
-	"encoding/json"
 	"fmt"
-	"github.com/D0K-ich/JinJi-Service/handlers/users"
-	"github.com/D0K-ich/types/message"
-	"github.com/fasthttp/router"
-	"github.com/fasthttp/session/v2"
-	"github.com/valyala/fasthttp"
-	"go.uber.org/zap"
+	"github.com/rs/zerolog/log"
 	"strconv"
-
 	"runtime/debug"
+	"encoding/json"
+
+	"github.com/fasthttp/router"
+	"github.com/valyala/fasthttp"
+	"github.com/fasthttp/session/v2"
+	"github.com/D0K-ich/types/message"
+
+	"github.com/D0K-ich/JinJi-Service/handlers/users"
 )
 
 const (
@@ -24,13 +25,13 @@ func CreateRouter(files_path string, admin_token string, user_session *session.S
 
 	main_router.PanicHandler = func(ctx *fasthttp.RequestCtx, i interface{}) {
 		debug.PrintStack()
-		log.Error("Panic detected", zap.Any("err", i))
+		log.Error().Msgf("Panic detected", "err", i)
 		ctx.Error("Internal error", fasthttp.StatusInternalServerError)
 		return
 	}
 
 	main_router.NotFound = func(ctx *fasthttp.RequestCtx) {
-		log.Info("(rest) >> NOT FOUND HANDLER", zap.Any("method", string(ctx.Method())), zap.Any("path", string(ctx.Path())))
+		log.Info().Msgf("(rest) >> NOT FOUND HANDLER", "method", string(ctx.Method()), "path", string(ctx.Path()))
 		if ctx.IsGet() {
 			return
 		}
@@ -39,7 +40,7 @@ func CreateRouter(files_path string, admin_token string, user_session *session.S
 	}
 
 	main_router.MethodNotAllowed = func(ctx *fasthttp.RequestCtx) {
-		log.Info("(rest) >> NOT ALLOWED METHOD", zap.Any("method", string(ctx.Method())), zap.Any("path", string(ctx.Path())))
+		log.Info().Msgf("(rest) >> NOT ALLOWED METHOD","method", string(ctx.Method()), "path", string(ctx.Path()))
 		writeError(ctx, "method not allowed")
 		return
 	}
@@ -63,7 +64,7 @@ func CreateRouter(files_path string, admin_token string, user_session *session.S
 		var check_cookie = session_store.Get(cookieKeyUser)
 		if check_cookie != nil {if user_id, err = strconv.Atoi(fmt.Sprintf("%v", session_store.Get(cookieKeyUser))); err != nil {return}} //todo
 
-		log.Debug("Cookie", zap.Any("is nil:", check_cookie == nil))
+		log.Debug().Msgf("Cookie", "is nil:", check_cookie == nil)
 
 		var handler = users.NewHandler(user_id)
 
