@@ -4,7 +4,7 @@ go 1.21.7
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
-	github.com/D0K-ich/types v0.0.0-20240802201620-7a5d4c518b20 // indirect
+	github.com/D0K-ich/types v0.0.0-20240805151138-f36cb1b852cb // indirect
 	github.com/andybalholm/brotli v1.1.0 // indirect
 	github.com/elastic/elastic-transport-go/v8 v8.5.0 // indirect
 	github.com/go-logr/logr v1.3.0 // indirect
@@ -39,12 +39,10 @@ require (
 	github.com/elastic/go-elasticsearch/v8 v8.13.1
 	github.com/fasthttp/router v1.5.1
 	github.com/fasthttp/session/v2 v2.5.5
-	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.3
 	github.com/kr/pretty v0.3.1
 	github.com/sashabaranov/go-openai v1.26.2
 	github.com/valyala/fasthttp v1.54.0
-	go.uber.org/zap v1.27.0
 	gopkg.in/yaml.v3 v3.0.1
 	gorm.io/driver/mysql v1.5.6
 	gorm.io/gorm v1.25.10

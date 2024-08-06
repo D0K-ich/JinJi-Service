@@ -17,10 +17,10 @@ func(i IndexKey) Validate() error {
 
 // the keys are binded to config, do not change
 const (
-	IndexKeyFetchUsers   IndexKey = "users" // "manager.fetch.profiles-1"
+	IndexKeyFetchDialogs IndexKey = "dialogs" // "manager.fetch.profiles-1"
 )
 
-var validIndexKeys = []IndexKey{IndexKeyFetchUsers}
+var validIndexKeys = []IndexKey{IndexKeyFetchDialogs}
 
 type Config struct {
 	lock		sync.RWMutex

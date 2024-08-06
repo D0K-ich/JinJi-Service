@@ -33,7 +33,7 @@ store:
   elastic:
     host: "http://localhost:9200"
     indices:
-      users: "users-1"
+      dialogs: "dialogs-1"
 
 services:
   shikimory:

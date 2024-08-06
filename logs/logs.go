@@ -1,12 +1,13 @@
 package logs
 
 import (
+	"os"
 	"errors"
+	"strconv"
+	"path/filepath"
+
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"os"
-	"path/filepath"
-	"strconv"
 )
 
 type Config struct {

@@ -18,17 +18,6 @@ type PrimaryId struct {
 	Id int `gorm:"column:id;primary_key:true" json:"id"`
 }
 
-type Dialog struct {
-	Uuid 		string 		`gorm:"column:uuid"                 json:"uuid"`
-
-	Header 		string		`gorm:"column:header"               json:"header"`
-	SubHeader 	string		`gorm:"column:sub_header"           json:"sub_header"`
-	DateUpdated time.Time	`gorm:"column:date_updated"         json:"date_updated"`
-}
-
-func(u *Dialog) TableName()    string  {return TableUsers}
-func(u *Dialog) IsEmpty()      bool    {return u == nil || u.Uuid == ""}
-
 type Users []*User
 type User struct {
 	//PrimaryId
@@ -57,7 +46,6 @@ type User struct {
 	//Services            *manager.UserSettings   `gorm:"column:settings"             json:"settings"`
 	Achievements        *Achievements   		`gorm:"column:achievements"             json:"achievements"`
 	Friends				*Friends				`gorm:"column:friends"              json:"friends"`
-	Dialogs				*Dialogs				`gorm:"column:dialogs"              json:"dialogs"`
 }
 
 func(u *User) TableName()    string  {return TableUsers}
@@ -104,15 +92,5 @@ func(f *Friends) Scan(data interface{}) error {return json.Unmarshal(data.([]byt
 func(f *Friends) Value() (driver.Value, error) {
 	if f == nil {return nil, nil}
 	return json.Marshal(f)
-}
-
-type Dialogs struct {
-	Dialogs []*Dialog `gorm:"dialogs" json:"dialogs"`
-}
-
-func(d *Dialogs) Scan(data interface{}) error {return json.Unmarshal(data.([]byte), d)}
-func(d *Dialogs) Value() (driver.Value, error) {
-	if d == nil {return nil, nil}
-	return json.Marshal(d)
 }
 

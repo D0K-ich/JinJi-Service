@@ -22,14 +22,22 @@ func(s *Storage) Ban(user_name string) (err error) {
 }
 
 //arch
-func(s *Storage) AddArch(arch_name, user_name string) (err error) {
+func(s *Storage) AddArch(achievements_name []string, user_name string) (err error) {
 	var user *models.User
 	if err = s.db.Where("name = ?", user_name).First(&user).Error; err != nil {return}
 
-	user.Achievements.Achievements = append(user.Achievements.Achievements, &models.Achievement{
-		Name	:    arch_name,
-		DateGet	: time.Now(),
-	})
+	var user_achievements = make(map[string]bool)
+	for _, user_achievement := range user.Achievements.Achievements {
+		user_achievements[user_achievement.Name] = true
+	}
+
+	for _, new_achievement := range achievements_name {
+		if user_achievements[new_achievement] {continue}
+		user.Achievements.Achievements = append(user.Achievements.Achievements, &models.Achievement{
+			Name	: new_achievement,
+			DateGet	: time.Now(),
+		})
+	}
 
 	if err = s.db.Save(&user).Error; err != nil {return}
 	return

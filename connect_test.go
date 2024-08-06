@@ -2,11 +2,6 @@ package JinJi_Service
 
 import (
 	"fmt"
-	"github.com/rs/zerolog"
-	"path/filepath"
-	"strconv"
-
-	"github.com/rs/zerolog/log"
 	"os/exec"
 	"testing"
 
@@ -16,7 +11,7 @@ import (
 func TestConnect(t  *testing.T) {
 	// Создаем кластер и сессию для подключения к базе данных
 	cluster := gocql.NewCluster("127.0.0.1")
-	cluster.Keyspace = "test_keyspace"
+	//cluster.Keyspace = "test_keyspace"
 	session, err := cluster.CreateSession()
 	if err != nil {
 		fmt.Printf("failed to create session: %v", err)
@@ -40,12 +35,4 @@ func TestPython(t *testing.T) {
 	}
 
 	fmt.Println(string(output))
-}
-
-func TestHash(t *testing.T) {
-	zerolog.CallerMarshalFunc = func(pc uintptr, file string, line int) string {
-		return filepath.Base(file) + ":" + strconv.Itoa(line)
-	}
-	log.Logger = log.With().Caller().Logger()
-	log.Info().Msg("hello world")
 }

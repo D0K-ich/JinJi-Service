@@ -16,18 +16,17 @@ import (
 )
 
 func NewAdapter(parent_ctx context.Context, config *Config) (a *Adapter, err error) {
-
 	if err = config.Validate(); err != nil {return}
 
 	a = &Adapter{
-		config:  config,
-		context: parent_ctx,
+		config	: config,
+		context	: parent_ctx,
 	}
 
 	if a.Client, err = E8.NewTypedClient(E8.Config{
-		Addresses:    []string{config.Host},
-		RetryBackoff: func(i int) time.Duration { return time.Duration(i) * 500 * time.Millisecond },
-		MaxRetries:   5,
+		Addresses		: []string{config.Host},
+		RetryBackoff	: func(i int) time.Duration { return time.Duration(i) * 500 * time.Millisecond },
+		MaxRetries		: 5,
 		//Transport		: &FastTransport{},	 //while not working, freezein on some request
 	}); err != nil {return}
 
@@ -37,11 +36,10 @@ func NewAdapter(parent_ctx context.Context, config *Config) (a *Adapter, err err
 
 	var info_resp *info.Response
 	if info_resp, err = a.Client.Info().Do(a.context); err != nil {return}
-	log.Info().Msgf("(elastic) >> Adapter created",
+	log.Info().Msgf("(elastic) >> Adapter created %s %v %s %v %s %s",
 		"version", info_resp.Version,
 		"name", info_resp.Name,
 		"cluster", info_resp.ClusterName)
-
 	return
 }
 
@@ -53,7 +51,6 @@ type Adapter struct {
 }
 
 func (a *Adapter) EnsureIndexExist(index_name string, settings *ET.IndexSettings, mapping *ET.TypeMapping) (err error) {
-
 	// check index name
 	if index_name = strings.TrimSpace(index_name); utf8.RuneCountInString(index_name) < 3 {return errors.New("empty or to short index name")}
 	if mapping == nil {return errors.New("nil index mapping")}
@@ -63,7 +60,7 @@ func (a *Adapter) EnsureIndexExist(index_name string, settings *ET.IndexSettings
 	if exist, err = a.Client.Indices.Exists(index_name).Do(a.context); err != nil {return}
 	if exist {return} // todo add mapping comparation
 
-	log.Info().Msgf("(elastic) >> need to create index", "name", index_name)
+	log.Info().Msgf("(elastic) >> need to create index %s %s", "name", index_name)
 
 	if settings == nil {return errors.New("get nil index settings")}
 
@@ -75,6 +72,6 @@ func (a *Adapter) EnsureIndexExist(index_name string, settings *ET.IndexSettings
 		return
 	}
 
-	log.Info().Msgf("(elastic) >> index created", "name", response.Index)
+	log.Info().Msgf("(elastic) >> index created %s %s", "name", response.Index)
 	return
 }
