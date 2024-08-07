@@ -7,7 +7,7 @@ before_script:
 
 stages:
   - build
-#  - test
+  - test
 
 #variables:
 #  GOPATH: /go
@@ -19,8 +19,8 @@ build:
   stage: build
   script: echo "Define your deployment script!"
 
-#
-#test:
-#  stage: test
-#  script:
-#    - go test -v .\lab_test.go
+
+test:
+  stage: test
+  script:
+    - go test -v .\lab_test.go
