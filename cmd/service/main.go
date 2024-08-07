@@ -40,7 +40,7 @@ func init() {
 	signal.Notify(sig_chan, os.Interrupt, syscall.SIGTERM)
 	go func() {
 		var sig = <-sig_chan
-		log.Info().Msgf("(main) >> Got os signal", "signal", sig)
+		log.Info().Msgf("(main) >> Got os signal %s %s", "signal", sig)
 		mainCancel()
 	}()
 
@@ -75,7 +75,7 @@ func main() {
 
 	select {
 	case <-mainCtx.Done():
-		log.Info().Msg("(main) >> Shutting down...")
+		log.Warn().Msg("(main) >> Shutting down...")
 		return
 	}
 }

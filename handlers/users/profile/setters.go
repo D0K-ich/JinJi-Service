@@ -17,7 +17,7 @@ func(h *Handler) NewUser(name, password, email string) (payload any, err error) 
 	if password = strings.TrimSpace(password); 	password 	== "" {err = errors.New("empty password for create user");return}
 
 	var exist_user *models.User
-	if exist_user, err = h.Mixins.Store.GetByName(name); exist_user.Name != "" {
+	if exist_user, err = h.Mixins.Users.GetByName(name); exist_user.Name != "" {
 		err = errors.New("user with this nick already exist")
 		return
 	}
@@ -46,7 +46,7 @@ func(h *Handler) NewUser(name, password, email string) (payload any, err error) 
 
 	if err = new_user.NewAchievement(&models.Achievement{Name: "Привет!", DateGet: time.Now()}); err != nil {return}
 
-	if err = h.Mixins.Store.Save(new_user); err != nil {return}
+	if err = h.Mixins.Users.Save(new_user); err != nil {return}
 	log.Info().Msgf("New user created", "name", name)
 	return
 }
@@ -54,7 +54,7 @@ func(h *Handler) NewUser(name, password, email string) (payload any, err error) 
 func(h *Handler) UpdateUser(user *models.User) (err error) {
 	if user == nil {return errors.New("nil user for update")}
 
-	if err = h.Mixins.Store.Save(user); err != nil {return}
+	if err = h.Mixins.Users.Save(user); err != nil {return}
 	log.Info().Msgf("New user created", "name", user)
 
 	return

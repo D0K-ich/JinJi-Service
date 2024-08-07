@@ -13,7 +13,7 @@ func(h *Handler) New(friend_name, user_name string) (payload any, err error) {
 
 	if user_name == friend_name {err = errors.New("this your nick;)"); return}
 
-	if err = h.Mixins.Store.AddFriend(user_name, friend_name); err != nil {err = errors.New("err on add frient user " + err.Error());return}
+	if err = h.Mixins.Users.AddFriend(user_name, friend_name); err != nil {err = errors.New("err on add frient user " + err.Error());return}
 
 	log.Info().Msg("New friend added")
 	return
@@ -25,7 +25,7 @@ func(h *Handler) Drop(friend_name, user_name string) (payload any, err error) {
 
 	if user_name == friend_name {err = errors.New("this your nick;)"); return}
 
-	if err = h.Mixins.Store.DropFriend(user_name, friend_name); err != nil {err = errors.New("err on add frient user " + err.Error());return}
+	if err = h.Mixins.Users.DropFriend(user_name, friend_name); err != nil {err = errors.New("err on add frient user " + err.Error());return}
 
 	log.Info().Msg("New friend droppped")
 	return

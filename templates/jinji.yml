@@ -5,7 +5,7 @@ logger:
 rest:
   address: ":8085"
   files_path: "/opt/manager/files"  # same as store
-  access_token: "3d973b5b5cfb4700421aab8f65749bdc"
+  access_token: "abf2779c3689d365ec46e7d23e5f2acc"
   session:
     port: 3306
     host: "127.0.0.1"

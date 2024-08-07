@@ -3,6 +3,8 @@ package users
 import (
 	"errors"
 
+	"github.com/D0K-ich/types/uuid"
+
 	"github.com/D0K-ich/types/iface"
 	"github.com/D0K-ich/types/message"
 
@@ -40,11 +42,14 @@ func(h *Handler) Route(message *message.Message) (payload any, err error) {
 	case "achievements/all"		: payload, err 	= h.Achievements().GetAllAchievements()
 	case "achievements/new"		: payload, err 	= h.Achievements().NewAchievement(message.StringSlice("arch_name"), message.String("user_name"))
 
+	//todo create separated handlers for chat
 	//messages
-	case "messages/new"			: payload, err 	= h.Chat().NewMessage(message.String("user_message"), message.String("dialog_uuid"))
+	case "messages/new"			: payload, err 	= h.Chat().NewMessage(message.String("user_message"), message.String("user_name"), iface.ReMarshalMust[uuid.DialogUuid](message.Get("dialog_uuid")))
+
+	//dialogs
 	case "dialogs/list"			: payload, err 	= h.Chat().GetAllDialogs(message.String("user_name"))
-	case "dialog/new"			: payload, err 	= h.Chat().NewDialog()
-	//case "dialog/drop"			: payload, err 	= h.Chat().GetAllAchievements()
+	case "dialog/new"			: payload, err 	= h.Chat().NewDialog(message.String("user_name"), message.String("user_message"))
+	case "dialog/delete"		: payload, err 	= h.Chat().DeleteDialog(iface.ReMarshalMust[uuid.DialogUuid](message.Get("dialog_uuid")))
 	}
 
 	return

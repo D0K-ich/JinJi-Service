@@ -9,10 +9,10 @@ import (
 
 func(h *Handler) GetAllDialogs(user_name string) (payload any, err error) {
 	var user *models.User
-	if user, err = h.Store.GetByName(user_name); err != nil {return}
+	if user, err = h.Users.GetByName(user_name); err != nil {return}	//todo
 
 	payload = map[string]interface{}{
-		"dialogs" : user.Dialogs.Dialogs,
+		"dialogs" : user.Achievements,
 	}
 
 	return

@@ -25,7 +25,7 @@ func cors(h fasthttp.RequestHandler, access_token string) fasthttp.RequestHandle
 	return func(ctx *fasthttp.RequestCtx) {
 		var origin string
 		if origin = string(ctx.Request.Header.Peek("Origin")); origin == "" {origin = "*"}
-		log.Debug().Msgf("CORS EXECUTED", "origin", origin, "method", string(ctx.Method()), "url", string(ctx.Request.RequestURI()))
+		log.Debug().Msgf("CORS EXECUTED %s %s %s %s %s %s", "origin", origin, "method", string(ctx.Method()), "url", string(ctx.Request.RequestURI()))
 		ctx.Response.Header.Set("Access-Control-Allow-Origin", origin)
 		ctx.Response.Header.Set("Access-Control-Allow-Credentials", "true")
 		ctx.Response.Header.Set("Access-Control-Allow-Methods", "GET, POST, HEAD, PATCH, PUT, DELETE, OPTIONS")
@@ -44,7 +44,7 @@ func cors(h fasthttp.RequestHandler, access_token string) fasthttp.RequestHandle
 }
 
 func writeError(ctx *fasthttp.RequestCtx, err_string string) {
-	log.Error().Msgf("http preprocess error", "err_string", err_string)
+	log.Error().Msgf("http preprocess error %s %s", "err_string", err_string)
 	ctx.SetStatusCode(fasthttp.StatusBadRequest)
 	ctx.SetContentType("application/json; charset=utf-8")
 	ctx.SetBodyString(`{"type" : "error", "message" : "` + err_string + `"}`)

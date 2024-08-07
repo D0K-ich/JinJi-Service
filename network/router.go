@@ -64,7 +64,7 @@ func CreateRouter(files_path string, admin_token string, user_session *session.S
 		var check_cookie = session_store.Get(cookieKeyUser)
 		if check_cookie != nil {if user_id, err = strconv.Atoi(fmt.Sprintf("%v", session_store.Get(cookieKeyUser))); err != nil {return}} //todo
 
-		log.Debug().Msgf("Cookie", "is nil:", check_cookie == nil)
+		log.Debug().Msgf("Cookie %s %v", "is nil:", check_cookie == nil)
 
 		var handler = users.NewHandler(user_id)
 

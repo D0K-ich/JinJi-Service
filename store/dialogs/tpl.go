@@ -25,8 +25,9 @@ type Dialog struct {
 
 type Messages []*Message
 type Message struct {
-	FromUser 		string		`json:"from_user"`
-	FromJinJi 		string		`json:"from_jinji"`
+	UserName		string			`json:"user_name"`
+	FromUser 		string			`json:"from_user"`
+	FromJinJi 		string			`json:"from_jinji"`
 
 	CreatedAt 		time.Time 		`json:"created_at"`
 }
@@ -47,6 +48,7 @@ var FieldDialogsMap = &types.TypeMapping{
 
 var FieldMessageMap = &types.TypeMapping{
 	Properties: map[string]types.Property{
+		"user_name"		: elastic.FieldSimpleKeyword,
 		"from_user"		: elastic.FieldTextMap,
 		"from_jinji"	: elastic.FieldTextMap,
 		"created_at"	: elastic.FieldDateMap,
