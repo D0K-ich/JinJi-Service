@@ -1,22 +1,24 @@
 image: golang:1.21.7
 
-stages:
-  - build
-#  - test
-
-variables:
-  GOPATH: /go
-  GOROOT: /usr/local/go
-  PATH: /go/bin:/usr/local/go/bin:$PATH
-
 before_script:
   - CHCP 65001
   - go version
   - go env
 
+stages:
+  - build
+#  - test
+
+#variables:
+#  GOPATH: /go
+#  GOROOT: /usr/local/go
+#  PATH: /go/bin:/usr/local/go/bin:$PATH
+
+
 build:
   stage: build
   script: echo "Define your deployment script!"
+
 #
 #test:
 #  stage: test
