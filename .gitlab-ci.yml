@@ -10,6 +10,7 @@ variables:
   PATH: /go/bin:/usr/local/go/bin:$PATH
 
 before_script:
+  - CHCP 65001
   - go version
   - go env
 
