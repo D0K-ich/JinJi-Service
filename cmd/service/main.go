@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/D0K-ich/JinJi-Service/service"
 	"os"
 	"fmt"
 	"flag"
@@ -54,19 +55,23 @@ func main() {
 
 	log.Info().Msg("(main) >> Creating store...")
 	if store.Default, err = store.NewStore(config.Store); err != nil {
-		log.Fatal().Msgf("Error while create store", "error", err)
-		return
+		log.Fatal().Msgf("Error while create store %s %v", "error", err)
+	}
+
+	log.Info().Msg("(main) >> Creating services...")
+	if service.Default, err = service.NewServices(config.Service); err != nil {
+		log.Fatal().Msgf("Error while create services %s %v", "error", err)
 	}
 
 	log.Info().Msg("(main) >> Creating new user session...")
 	var user_session *session.Session
 	if user_session, err = rest.NewSession(config.Rest, rest.CookieNameUser, rest.TableUserSessions); err != nil {
-		log.Fatal().Msgf("(main) >> failed to create user session", "err", err)
+		log.Fatal().Msgf("(main) >> failed to create user session %s %v", "err", err)
 	}
 
 	log.Info().Msg("(main) >> Creating router...")
 	if network.DefaultServer, err = network.NewServer(config.Server, version, user_session); err != nil {
-		log.Fatal().Msgf("(main) >> Err while create server", "err", err)
+		log.Fatal().Msgf("(main) >> Err while create server %s %v", "err", err)
 	}
 
 	log.Info().Msg("(main) >> Creating gpt...")
