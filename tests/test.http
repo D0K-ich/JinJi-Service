@@ -1,3 +1,11 @@
+GRPC localhost:11223/neo.Auth/Login
+Key: Value
+
+{
+  "email": "asd"
+}
+
+###
 POST http://192.168.2.119:8084/user/messages/new
 Content-Type: application/json
 X-Access-Token: sadsdasd
@@ -23,5 +31,14 @@ X-Access-Token: abf2779c3689d365ec46e7d23e5f2acc
 
 {
   "dialog_uuid": "DIALOG.a5e68476-c34d-4e0f-afc1-e0f294acf47f"
+}
+#############
+
+POST http://localhost:11223
+Content-Type: application/json
+#X-Access-Token: abf2779c3689d365ec46e7d23e5f2acc
+
+{
+  "email": "DIALOG.a5e68476-c34d-4e0f-afc1-e0f294acf47f"
 }
 #############

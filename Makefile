@@ -28,6 +28,11 @@ dev-start:
 	@echo "------------------------------------"
 	cd cmd/service && go run main.go
 
+proto-gen:
+	@echo "===================================="
+	@echo "Generating protobuf..."
+	@echo "------------------------------------"
+	protoc -I proto proto/neo/neo.proto --go_out=proto/neo/genned/ --go_opt=paths=source_relative --go-grpc_out=proto/neo/genned/ --go-grpc_opt=paths=source_relative && go mod tidy
 
 #help:					# display this help
 #	@echo "Targets"
